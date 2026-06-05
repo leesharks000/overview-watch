@@ -178,6 +178,34 @@
     <div class="toggle on" id="toggle-aimode" data-setting="captureGoogleAIMode"></div>
   </div>
 
+  <div class="setting">
+    <div>
+      <div class="setting-label">Capture Knowledge Panel</div>
+      <div class="setting-desc">Right-rail entity cards (when present alongside AI Overview).</div>
+    </div>
+    <div class="toggle on" id="toggle-kp" data-setting="captureKnowledgePanel"></div>
+  </div>
+
+  <div class="setting">
+    <div>
+      <div class="setting-label">Save HTML snapshot per capture</div>
+      <div class="setting-desc">Stores the raw HTML of the composition container (up to 50KB each). Useful for forensic re-inspection but consumes storage quickly. Off by default.</div>
+    </div>
+    <div class="toggle" id="toggle-snapshot" data-setting="saveHTMLSnapshot"></div>
+  </div>
+
+  <h2>Horizon Conditions</h2>
+
+  <div class="setting" style="flex-direction:column;align-items:flex-start;">
+    <div style="margin-bottom:8px;">
+      <div class="setting-label">Test condition label</div>
+      <div class="setting-desc">Free-form label attached to every capture in this session. Use to mark horizon conditions: <code>signed-in-primary</code>, <code>signed-out-clean</code>, <code>incognito</code>, <code>brave-normal</code>, <code>mobile-hotspot</code>, <code>vpn-netherlands</code>, etc. Change when switching browsing context.</div>
+    </div>
+    <input type="text" id="test-condition-label"
+           placeholder="e.g. signed-in-primary"
+           style="width: 100%; padding: 8px 10px; background: var(--bg-warm); color: var(--paper); border: 1px solid var(--rule); border-radius: 3px; font-family: inherit; font-size: 13px;">
+  </div>
+
   <h2>Display</h2>
 
   <div class="setting">

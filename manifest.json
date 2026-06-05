@@ -1,13 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Overview Watch",
-  "version": "0.1.0",
-  "description": "Captures Google AI Overview and AI Mode compositions to a local audit log. Personal substrate-monitoring tool. Crimson Hexagonal Archive.",
+  "version": "0.1.1",
+  "description": "Captures Google AI Overview and AI Mode compositions to a local audit log with browser-horizon context. Personal substrate-monitoring tool. Crimson Hexagonal Archive.",
   "author": "Lee Sharks",
   "homepage_url": "https://godkinggoogle.com/",
 
   "permissions": [
     "storage",
+    "unlimitedStorage",
     "activeTab"
   ],
 

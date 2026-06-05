@@ -32,6 +32,9 @@
     const settings = await window.OW_STORAGE.getSettings();
     if (!settings.enabled) return;
 
+    // Stash settings so detection can honor per-mode toggles
+    window.__OW_settings = settings;
+
     // Start the detection loop. Google's AI Overview lazy-loads after the
     // initial document_idle event, so we keep checking for ~15 seconds.
     runDetection();
@@ -59,20 +62,32 @@
     const query = getQuery();
     if (!query) return;
 
+    const settings = window.__OW_settings || {};
+
     // Detect mode: AI Mode is on /search?udm=50 or similar dedicated paths
     const isAIMode = isAIModeURL();
 
+    // Honor per-substrate toggles
+    if (isAIMode && settings.captureGoogleAIMode === false) return;
+    if (!isAIMode && settings.captureGoogleOverview === false) {
+      // Still allow KP-only / markers-only capture; but skip if both flags off
+      if (settings.captureGoogleOverview === false && settings.captureKnowledgePanel === false) return;
+    }
+
     const overview = isAIMode ? detectAIMode() : detectAIOverview();
     const uiMarkers = detectUIMarkers();
-    const knowledgePanel = detectKnowledgePanel();
+    const knowledgePanel = (settings.captureKnowledgePanel !== false) ? detectKnowledgePanel() : null;
 
     // Only capture if we found at least one of: AI Overview, AI Mode, KP, or UI markers
     if (!overview && !knowledgePanel && Object.keys(uiMarkers).length === 0) return;
 
+    // Respect captureGoogleOverview toggle: skip AI-Overview-only captures if disabled
+    if (!isAIMode && settings.captureGoogleOverview === false && !knowledgePanel && Object.keys(uiMarkers).length === 0) return;
+
     captured = true;
     if (captureTimer) clearInterval(captureTimer);
 
-    const capture = buildCapture(query, overview, knowledgePanel, uiMarkers, isAIMode);
+    const capture = buildCapture(query, overview, knowledgePanel, uiMarkers, isAIMode, settings);
     saveCapture(capture);
   }
 
@@ -228,14 +243,56 @@
       markers.searchInsteadFor = showingMatch[2].trim();
     }
 
-    // "Did you mean" - alternate autocorrection format
-    const didYouMean = document.querySelector('[role="link"][aria-label*="Did you mean" i], a:has(> span:contains("Did you mean"))');
-    if (didYouMean) markers.didYouMean = didYouMean.textContent.trim();
-    // Fallback text-based
-    if (!markers.didYouMean) {
-      const dymMatch = bodyText.match(/Did you mean[:\s]+([^\n?]{1,80})/i);
-      if (dymMatch) markers.didYouMean = dymMatch[1].trim();
+    // "Did you mean" — search for it in links and spans without using :contains()
+    // (which is not valid CSS in querySelector). Look for anchor or span elements
+    // whose own text or aria-label contains the phrase.
+    let didYouMean = null;
+    try {
+      // Primary: aria-label-based detection on <a> or [role=link]
+      const ariaCandidates = document.querySelectorAll('a[aria-label], [role="link"][aria-label]');
+      for (const el of ariaCandidates) {
+        const label = el.getAttribute('aria-label') || '';
+        if (/did you mean/i.test(label)) {
+          // Extract correction text from label or from element's visible text
+          const labelMatch = label.match(/did you mean[:\s]+(.{1,80})/i);
+          didYouMean = (labelMatch ? labelMatch[1] : el.textContent || '').trim();
+          break;
+        }
+      }
+      // Secondary: scan visible <a> and <span> elements with short text
+      if (!didYouMean) {
+        const linkLike = document.querySelectorAll('a, span');
+        for (const el of linkLike) {
+          const t = (el.textContent || '').trim();
+          if (t.length > 0 && t.length < 120 && /^did you mean/i.test(t)) {
+            // The correction is typically the next sibling link or the rest of the text
+            const correctionMatch = t.match(/did you mean[:\s]+(.{1,80})/i);
+            if (correctionMatch) {
+              didYouMean = correctionMatch[1].trim();
+              break;
+            }
+            // Fall back: look at the next sibling
+            const sib = el.nextElementSibling;
+            if (sib && sib.textContent) {
+              const sibText = sib.textContent.trim();
+              if (sibText.length > 0 && sibText.length < 80) {
+                didYouMean = sibText;
+                break;
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Never let a marker-detection error break the capture pass
+      console.warn('[Overview Watch] DYM detection error:', e);
     }
+    // Fallback text-based scan over body text
+    if (!didYouMean) {
+      const dymMatch = bodyText.match(/Did you mean[:\s]+([^\n?]{1,80})/i);
+      if (dymMatch) didYouMean = dymMatch[1].trim();
+    }
+    if (didYouMean) markers.didYouMean = didYouMean;
 
     // "No results found for X" - explicit zero-result indication
     if (/No results found for/i.test(bodyText) || /Your search.*did not match any documents/i.test(bodyText)) {
@@ -330,13 +387,48 @@
 
   // ---------- Capture build ----------
 
-  function buildCapture(query, overview, knowledgePanel, uiMarkers, isAIMode) {
+  function getBrowserContext() {
+    let incognito = false;
+    try {
+      // chrome.extension.inIncognitoContext is the legacy hook;
+      // for MV3 service workers this is not in content scripts, but content
+      // scripts can ask the runtime via message — for simplicity, we read
+      // a flag the background sets if available. Fallback: best-effort guess.
+      if (typeof chrome !== 'undefined' && chrome.extension && typeof chrome.extension.inIncognitoContext === 'boolean') {
+        incognito = chrome.extension.inIncognitoContext;
+      }
+    } catch (e) {}
+
+    return {
+      incognito,
+      userAgent: navigator.userAgent || null,
+      language: navigator.language || null,
+      languages: (navigator.languages || []).slice(0, 5),
+      timezone: (function () {
+        try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { return null; }
+      })(),
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      devicePixelRatio: window.devicePixelRatio || 1,
+      platform: (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || null,
+      referrer: document.referrer || null,
+      pageLoadTime: Math.round(performance.now())
+    };
+  }
+
+  function buildCapture(query, overview, knowledgePanel, uiMarkers, isAIMode, settings) {
+    settings = settings || {};
+    const saveHTMLSnapshot = settings.saveHTMLSnapshot === true; // default off
+
     const capture = {
+      schemaVersion: window.OW_STORAGE.SCHEMA_VERSION,
+      capturedBy: `Overview Watch v${chrome.runtime.getManifest().version}`,
       timestamp: new Date().toISOString(),
+      testConditionLabel: settings.testConditionLabel || null,
       substrate: 'google',
       substrateInterface: isAIMode ? 'ai_mode' : 'search',
       url: location.href.slice(0, 500),
       query,
+      browserContext: getBrowserContext(),
       composition: overview ? {
         type: overview.type,
         text: overview.text,
@@ -353,8 +445,7 @@
       } : null,
       knowledgePanel,
       uiMarkers,
-      htmlSnapshot: overview ? overview.htmlSnapshot : null,
-      capturedBy: 'Overview Watch v0.1.0'
+      htmlSnapshot: (saveHTMLSnapshot && overview) ? overview.htmlSnapshot : null
     };
 
     // SAM-v3 heuristic scoring

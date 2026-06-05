@@ -21,6 +21,9 @@
       if (settings[key]) t.classList.add('on');
       else t.classList.remove('on');
     });
+    // Test-condition label
+    const labelInput = document.getElementById('test-condition-label');
+    if (labelInput) labelInput.value = settings.testConditionLabel || '';
     await updateStorageInfo();
   }
 
@@ -46,6 +49,21 @@
       showStatus(`${key}: ${settings[key] ? 'enabled' : 'disabled'}`);
     });
   });
+
+  // Test condition label — debounced save on input
+  const labelInput = document.getElementById('test-condition-label');
+  if (labelInput) {
+    let saveTimer = null;
+    labelInput.addEventListener('input', () => {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        const settings = await STORAGE.getSettings();
+        settings.testConditionLabel = labelInput.value.trim();
+        await STORAGE.setSettings(settings);
+        showStatus(`Test condition: "${settings.testConditionLabel || '(cleared)'}"`);
+      }, 600);
+    });
+  }
 
   // Export
   document.getElementById('export-btn').addEventListener('click', async () => {

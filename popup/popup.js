@@ -10,7 +10,11 @@
 
   async function refresh() {
     const count = await STORAGE.getCount();
-    countDisplay.innerHTML = `<strong>${count}</strong> capture${count === 1 ? '' : 's'}`;
+    const settings = await STORAGE.getSettings();
+    const labelHTML = settings.testConditionLabel
+      ? ` <span style="color:var(--terracotta);font-weight:600;">· ${escapeHTML(settings.testConditionLabel)}</span>`
+      : '';
+    countDisplay.innerHTML = `<strong>${count}</strong> capture${count === 1 ? '' : 's'}${labelHTML}`;
 
     const recent = await STORAGE.getRecentCaptures(50);
     renderStats(recent);
