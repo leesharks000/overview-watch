@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Overview Watch</title>
+<style>
+  :root {
+    --bg: #1a0e0a;
+    --bg-warm: #251614;
+    --paper: #f4ebdb;
+    --paper-dim: #d8c9af;
+    --terracotta: #c66544;
+    --amber: #d49849;
+    --amber-soft: #e8b876;
+    --oxblood: #6b2616;
+    --rule: rgba(212, 152, 73, 0.22);
+    --flag-bg: rgba(198, 101, 68, 0.18);
+    --good: #7fb069;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 480px;
+    max-height: 600px;
+    overflow-y: auto;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  header {
+    padding: 12px 14px 8px;
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+  header .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--amber-soft);
+    letter-spacing: 0.02em;
+  }
+  header .count {
+    font-size: 11px;
+    color: var(--paper-dim);
+  }
+  header .count strong { color: var(--paper); font-weight: 700; }
+  header .actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .btn {
+    background: rgba(212,152,73,0.12);
+    color: var(--amber-soft);
+    border: 1px solid var(--rule);
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn:hover { background: rgba(212,152,73,0.22); }
+  .btn-primary { background: var(--terracotta); color: var(--paper); border-color: var(--terracotta); }
+  .btn-primary:hover { background: var(--oxblood); }
+
+  .stats {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px;
+    color: var(--paper-dim);
+  }
+  .stats span { color: var(--paper); font-weight: 600; }
+  .stats .flag-stat { color: var(--terracotta); }
+
+  .empty {
+    padding: 30px 14px;
+    text-align: center;
+    color: var(--paper-dim);
+    font-style: italic;
+  }
+  .empty p { margin-bottom: 8px; }
+
+  .captures { padding: 4px 0; }
+  .capture {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .capture:hover { background: rgba(212,152,73,0.06); }
+  .capture .cap-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .capture .cap-query {
+    font-weight: 600;
+    color: var(--paper);
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 320px;
+  }
+  .capture .cap-time {
+    font-size: 10px;
+    color: var(--paper-dim);
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+  .capture .cap-meta {
+    font-size: 10px;
+    color: var(--paper-dim);
+    margin-bottom: 4px;
+  }
+  .capture .cap-type {
+    display: inline-block;
+    padding: 1px 6px;
+    background: var(--bg-warm);
+    border-radius: 2px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--amber);
+    margin-right: 6px;
+  }
+  .capture .cap-snippet {
+    font-size: 11px;
+    color: var(--paper-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-height: 32px;
+  }
+  .flags {
+    margin-top: 6px;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .flag {
+    background: var(--flag-bg);
+    color: var(--terracotta);
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+  .scores {
+    margin-top: 4px;
+    font-size: 10px;
+    color: var(--paper-dim);
+  }
+  .scores .score {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .scores .score-val { color: var(--amber-soft); font-weight: 600; }
+
+  /* Expanded detail view */
+  .detail {
+    display: none;
+    margin-top: 8px;
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--paper);
+  }
+  .detail.visible { display: block; }
+  .detail .field { margin-bottom: 6px; }
+  .detail .field-label {
+    color: var(--paper-dim);
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+  .detail .text-content {
+    max-height: 180px;
+    overflow-y: auto;
+    background: var(--bg);
+    padding: 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--paper-dim);
+  }
+  .detail .citations {
+    font-size: 10px;
+    color: var(--amber);
+  }
+  .detail .citations a {
+    color: var(--amber);
+    text-decoration: none;
+    display: block;
+    padding: 2px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .detail .citations a:hover { color: var(--amber-soft); }
+
+  footer {
+    padding: 8px 14px;
+    border-top: 1px solid var(--rule);
+    background: var(--bg-warm);
+    font-size: 10px;
+    color: var(--paper-dim);
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+  }
+  footer a { color: var(--amber); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <h1>Overview Watch</h1>
+    <div class="count" id="count-display">— captures</div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary" id="export-btn">Export JSON</button>
+    <a class="btn" href="../options/index.html" target="_blank">Settings</a>
+    <button class="btn" id="refresh-btn">Refresh</button>
+  </div>
+</header>
+
+<div class="stats" id="stats">Loading…</div>
+
+<div class="captures" id="captures-list">
+  <div class="empty">
+    <p>No captures yet.</p>
+    <p style="font-size:10px">Visit google.com/search and run a query that produces an AI Overview.</p>
+  </div>
+</div>
+
+<footer>
+  Local-only · v0.1.0 · <a href="https://godkinggoogle.com/" target="_blank">Crimson Hexagonal Archive</a>
+</footer>
+
+<script src="../lib/storage.js"></script>
+<script src="../lib/sam-v3.js"></script>
+<script src="popup.js"></script>
+
+</body>
+</html>
