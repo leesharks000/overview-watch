@@ -1,137 +1,141 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Overview Captures — What the Composition Layer Shows</title>
-<meta name="description" content="Documented captures of Google AI Overview, AI Mode, and knowledge panel results for Crimson Hexagonal Archive entities. Each capture shows what the composition layer does with authored, DOI-anchored work: what it retrieves, what it erases, what it fabricates, what it gets right.">
-<meta name="keywords" content="AI Overview, AI Mode, Google search, composition layer, provenance erasure, Lee Sharks, Crimson Hexagonal Archive, knowledge panel, AI search results, AI accuracy">
+<title>AI Overview Captures — What the Composition Layer Shows | Lee Sharks</title>
+<meta name="description" content="Documented captures of Google AI Overview, AI Mode, and knowledge panel results for Crimson Hexagonal Archive entities. What the composition layer retrieves, erases, fabricates, and gets right. PER, DSL, SAS measured live. Lee Sharks, Semantic Economy Institute.">
+<meta name="keywords" content="AI Overview, AI Mode, Google search, composition layer, provenance erasure, Lee Sharks, Crimson Hexagonal Archive, AI search results, AI accuracy, semantic economy, operative semiotics, heteronym, Pearl and Other Poems, knowledge panel">
 <meta name="author" content="Lee Sharks">
 <link rel="canonical" href="https://godkinggoogle.com/captures">
+<meta property="og:title" content="AI Overview Captures — What the Composition Layer Shows">
+<meta property="og:description" content="Documented screenshots of how Google's AI surfaces treat DOI-anchored independent scholarship. Each capture timestamped and annotated.">
 <style>
-:root{--bg:#0a0a0f;--surface:#111118;--text:#b8b4ae;--dim:#555;--accent:#c84b2e;--teal:#00c9a7;--mono:'Courier New',monospace}
-*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:Georgia,serif;line-height:1.7;padding:1.5em;max-width:900px;margin:0 auto}
-h1{font-size:1.8em;color:#fff;margin-bottom:0.2em}
-h2{font-family:var(--mono);font-size:0.85em;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-top:2.5em;margin-bottom:1em}
-.subtitle{color:var(--dim);font-size:0.95em;margin-bottom:2em;font-style:italic}
-.capture{display:flex;gap:1.5em;margin-bottom:2.5em;border-bottom:1px solid #1a1a22;padding-bottom:2em;flex-wrap:wrap}
-.capture img{width:280px;max-width:100%;border:1px solid #222;border-radius:4px;flex-shrink:0}
-.capture-meta{flex:1;min-width:280px}
-.query{font-family:var(--mono);font-size:0.95em;color:var(--teal);margin-bottom:0.3em}
-.date{font-family:var(--mono);font-size:0.75em;color:var(--dim)}
-.surface{font-family:var(--mono);font-size:0.75em;color:var(--accent);margin-bottom:0.6em}
-.notes{font-size:0.9em;line-height:1.6}
-a{color:var(--teal)}
-.nav{font-family:var(--mono);font-size:0.8em;margin-bottom:2em}.nav a{color:var(--dim);margin-right:1em}
-.batch{font-family:var(--mono);font-size:0.75em;color:var(--dim);margin-bottom:0.5em}
+:root{--bg:#0a0a0f;--surface:#111118;--card:#161620;--text:#b8b4ae;--dim:#555;--accent:#c84b2e;--teal:#00c9a7;--amber:#d4a843;--mono:'Courier New',monospace;--serif:Georgia,serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto;padding:1.5em}
+h1{font-size:1.7em;color:#fff;margin-bottom:0.2em}
+h2{font-family:var(--mono);font-size:0.8em;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-top:2.5em;margin-bottom:1em;border-bottom:1px solid #1a1a22;padding-bottom:0.5em}
+.subtitle{color:var(--dim);font-size:0.9em;margin-bottom:1.5em;font-style:italic}
+a{color:var(--teal);text-decoration:none}a:hover{text-decoration:underline}
+.nav{font-family:var(--mono);font-size:0.8em;margin-bottom:1.5em}.nav a{color:var(--dim);margin-right:1em}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1em;margin-bottom:1.5em}
+.card{background:var(--card);border:1px solid #1e1e28;border-radius:6px;overflow:hidden;cursor:pointer;transition:border-color 0.2s}
+.card:hover{border-color:var(--teal)}
+.card img{width:100%;display:block;aspect-ratio:9/16;object-fit:cover;object-position:top}
+.card-meta{padding:0.7em;font-size:0.78em}
+.card-query{font-family:var(--mono);color:var(--teal);margin-bottom:0.2em;font-size:0.85em}
+.card-surface{font-family:var(--mono);color:var(--dim);font-size:0.75em}
+
+/* Lightbox */
+.lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:1000;overflow-y:auto;padding:2em}
+.lightbox.active{display:flex;flex-direction:column;align-items:center}
+.lightbox-close{position:fixed;top:1em;right:1.5em;font-size:2em;color:#fff;cursor:pointer;z-index:1001;font-family:var(--mono)}
+.lightbox-img{max-width:500px;width:100%;border:1px solid #333;border-radius:4px;margin-bottom:1.5em}
+.lightbox-meta{max-width:600px;width:100%;color:var(--text)}
+.lightbox-query{font-family:var(--mono);font-size:1.1em;color:var(--teal);margin-bottom:0.3em}
+.lightbox-date{font-family:var(--mono);font-size:0.8em;color:var(--dim)}
+.lightbox-surface{font-family:var(--mono);font-size:0.8em;color:var(--accent);margin-bottom:0.8em}
+.lightbox-notes{font-size:0.92em;line-height:1.7}
+
+.footer{margin-top:3em;font-size:0.75em;color:var(--dim);font-family:var(--mono);border-top:1px solid #1a1a22;padding-top:1em}
 </style></head><body>
+<div class="wrap">
 <div class="nav"><a href="/">← godkinggoogle.com</a> <a href="/wound-gauge">wound gauge</a></div>
 <h1>Captures</h1>
-<p class="subtitle">What the composition layer shows when it reads the archive — documented, timestamped, annotated.</p>
-<p style="font-size:0.88em;margin-bottom:2em;">Each capture documents what Google's AI Overview, AI Mode, or knowledge panel does with authored, DOI-anchored work from the Crimson Hexagonal Archive. What it retrieves. What it erases. What it fabricates. What it gets right. The captures are Wound Gauge readings: contemporaneous evidence of the composition layer's behavior, taken from the public search surface.</p>
+<p class="subtitle">What the composition layer shows when it reads the archive — documented, timestamped, expandable.</p>
+<p style="font-size:0.85em;margin-bottom:2em;">Each image is a screenshot of Google's AI Overview, AI Mode, or knowledge panel responding to a query about work in the Crimson Hexagonal Archive. Click any image to expand with full annotation. The captures are Wound Gauge readings and reinfection nodes — posted to <a href="https://twitter.com/leesharks000">Twitter</a> with exact search strings, to <a href="https://tiktok.com/@leesharks">TikTok</a> with music, and archived here with metadata.</p>
 
-<h2>Batch 1 — June 2026</h2>
+<h2>The Frameworks</h2>
+<div class="grid" id="frameworks"></div>
 
-<div class="capture">
-<img src="/captures/socrates-as-orthonym.png" alt="AI Overview capture: socrates as orthonym" loading="lazy">
-<div class="capture-meta">
-<div class="query">socrates as orthonym</div>
-<div class="date">2026-06-07</div>
-<div class="surface">AI Overview popup</div>
-<div class="notes">The composition layer retrieves the Prolegomena to the Historical Logos (EA-LOGOS-02) and presents Socrates-as-orthonym as stemming from 'contemporary academic philosophy and literary theory' — correct attribution to a scholarly framework, with Zenodo cited. Author name absent.</div>
-</div>
-</div>
+<h2>The Heteronyms</h2>
+<div class="grid" id="heteronyms"></div>
 
-<div class="capture">
-<img src="/captures/secret-book-of-walt.png" alt="AI Overview capture: "secret book of walt"" loading="lazy">
-<div class="capture-meta">
-<div class="query">"secret book of walt"</div>
-<div class="date">2026-06-13</div>
-<div class="surface">AI Overview popup</div>
-<div class="notes">Retrieves THE SECRET BOOK OF WALT: Hidden Teachings of Walt Whitman, Cowboy of Time. Correctly identifies it as part of ANTIOCH and the Waltian Diptych. Names Jack Feist and Emily Antioch. Aperture Atlas thumbnail displayed. SciLynk cited.</div>
-</div>
-</div>
+<h2>The Sites &amp; Surfaces</h2>
+<div class="grid" id="sites"></div>
 
-<div class="capture">
-<img src="/captures/crimson-hexagonal-archive.png" alt="AI Overview capture: crimson hexagonal archive" loading="lazy">
-<div class="capture-meta">
-<div class="query">crimson hexagonal archive</div>
-<div class="date">2026-06-13</div>
-<div class="surface">AI Mode</div>
-<div class="notes">Strong retrieval. Names Lee Sharks, the heteronyms (Dr. Orin Trace, Ayanna Vox), describes operative architecture spanning 2004–2026. Links to Zenodo community. Mentions 'New Human Operating System.' 13 sites cited. SciLynk + Zenodo + CERN sourced.</div>
+<h2>The Books</h2>
+<div class="grid" id="books"></div>
+
+<div class="lightbox" id="lb" onclick="if(event.target===this)closeLB()">
+<span class="lightbox-close" onclick="closeLB()">&times;</span>
+<img class="lightbox-img" id="lb-img" src="" alt="">
+<div class="lightbox-meta">
+<div class="lightbox-query" id="lb-query"></div>
+<div class="lightbox-date" id="lb-date"></div>
+<div class="lightbox-surface" id="lb-surface"></div>
+<div class="lightbox-notes" id="lb-notes"></div>
 </div>
 </div>
 
-<div class="capture">
-<img src="/captures/water-giraffe-cycle.png" alt="AI Overview capture: "the water giraffe cycle"" loading="lazy">
-<div class="capture-meta">
-<div class="query">"the water giraffe cycle"</div>
-<div class="date">2026-06-13</div>
-<div class="surface">AI Overview popup</div>
-<div class="notes">Names Lee Sharks, identifies human-AI collaboration, describes it as an experimental epic. Names the Negation Door (6,666 words). Correctly identifies the Main Core (100+ chapters). Brain scan images pulled (unrelated but striking). Then adds: 'giraffes in nature don\'t have a distinct water cycle' — the composition layer hedging between the literary project and the animal.</div>
+<div class="footer">
+Lee Sharks · <a href="https://orcid.org/0009-0000-1599-0703">ORCID 0009-0000-1599-0703</a> · Crimson Hexagonal Archive<br>
+Continuously versioned. The record is the only instrument that outlasts the regime.
 </div>
 </div>
 
-<div class="capture">
-<img src="/captures/logotic-programming.png" alt="AI Overview capture: logotic programming" loading="lazy">
-<div class="capture-meta">
-<div class="query">logotic programming</div>
-<div class="date">2026-06-13</div>
-<div class="surface">AI Mode</div>
-<div class="notes">Strong retrieval via Academia.edu. Defines logotic programming as 'an emerging theoretical framework that shifts coding from traditional executable instructions to the deliberate construction of conditions of intelligibility.' Names semantic anchoring, model navigation. Describes non-coercion correctly: 'naturally guiding the AI\'s output without coercion.'</div>
-</div>
-</div>
+<script>
+const captures = [
+// FRAMEWORKS
+{s:"frameworks",slug:"provenance-erasure-1",q:"provenance erasure",date:"2026-06-13",surface:"AI Overview popup",notes:"provenanceerasure.org ranks first. AI Overview defines provenance erasure as 'the systematic removal, loss, or intentional severing of the origins, lineage, or authorship of an idea, digital asset, or physical artifact.' 9+ sources cited including Institute of Historic... Zenodo shows 'Provenance After AI' with the PER formula. Author name absent from Overview text itself."},
+{s:"frameworks",slug:"provenance-erasure-2",q:"provenance erasure",date:"2026-06-13",surface:"AI Overview popup (scrolled)",notes:"Same query scrolled. provenanceerasure.org — Lee Sharks ranks first in organic results. Zenodo shows 'Provenance After AI' with the PER formula visible in the snippet: 'PER = 1 − (retained provenance units / ...)'. The framework is retrievable by name. The author is retrievable by site. The Overview dissolves the connection."},
+{s:"frameworks",slug:"operative-semiotics",q:"operative semiotics",date:"2026-06-13",surface:"AI Overview popup",notes:"Strong retrieval. Defines operative semiotics as 'a specialized framework of semiotic theory that shifts the focus of language from merely describing material conditions to actively acting as an engine within them.' Zenodo Executive Summary and Grundrisse both cited. 10+ sources. The definition is accurate and the emphasis (describing → acting) is the core distinction. Author unnamed in Overview."},
+{s:"frameworks",slug:"semantic-economy",q:"semantic economy",date:"2026-06-13",surface:"AI Mode, 15 sites",notes:"Exceptional retrieval. 'An emerging socioeconomic framework and diagnostic theory that analyzes how meaning, knowledge, and context are produced, monetized, and extracted as value, particularly within platform capitalism and artificial intelligence systems.' Names the Semantic Economy Institute and Crimson Hexagonal Archive. Lists four Core Pillars: Semantic Labor, Semantic Capital, Semantic Rent, Semantic Commons. semanticeconomy.org cited. Digital Tonto cited. 'interpretation and human cognitive labor' in italics."},
+{s:"frameworks",slug:"holographic-kernel",q:"holographickernel.org",date:"2026-06-13",surface:"AI Overview popup",notes:"'A conceptual and experimental domain related to Operative Semiotics, an esoteric research framework developed by the Semantic Economy Institute and the Crimson Hexagonal Archive.' Correctly links to parent framework. Describes 'preserving reconstructive capacity and personality in AI systems.' holographickernel.org ranks first. Zenodo cited."},
 
-<div class="capture">
-<img src="/captures/vpcor.png" alt="AI Overview capture: vpcor" loading="lazy">
-<div class="capture-meta">
-<div class="query">vpcor</div>
-<div class="date">2026-06-13</div>
-<div class="surface">Regular search + AI Overview</div>
-<div class="notes">vpcor.org ranks first. Knowledge panel shows founding date and Ayanna Vox. AI Overview picks up 'Vox Populi, community outreach, and rhizome — models of decentralized, grassroots organizing.' Zenodo result: The Lee Sharks Prestigious 10000 MacArthur Genius Grants Poetry Prize.</div>
-</div>
-</div>
+// HETERONYMS
+{s:"heteronyms",slug:"nobel-glas-lagrange",q:"nobel glass lagrange observatory",date:"2026-06-13",surface:"Regular search + AI Overview",notes:"lagrangeobservatory.org ranks first. AI Overview: 'Nobel Glas is a synthetic entity, heteronym, and adversarial topologist functioning within the conceptual, AI-driven digital institution known as the Lagrange Observatory! (LO!). It operates within theoretical, speculative, and procedural frameworks often categorized under digital poetics and platform studies, rather than a physical glass lens or a conventional astronomical observatory.' 4+ sources. Glass Academy (glass blower, 5.0 stars) appears below — the composition layer hedging."},
+{s:"heteronyms",slug:"rebekah-cranes",q:"rebekah cranes diagrammatic poetics",date:"2026-06-13",surface:"AI Mode, 9 sites",notes:"'Rebekah Cranes is a conceptual heteronym — a fictional poet persona — associated with a modern experimental literature project exploring diagrammatic poetics.' Uses 'her work' (correctly gendered). Names 'computational logic, structural schemas, and poetic form.' Defines diagrammatic poetics as 'a subgenre of avant-garde and experimental poetry that treats the page not merely as a container for text, but as a spatial grid.' Strong."},
+{s:"heteronyms",slug:"sparrow-wells-patacinematics",q:"sparrow wells studio for patacinematics",date:"2026-06-13",surface:"Regular search + AI Overview",notes:"Zenodo charter ranks first. BUT the snippet shows the pre-fix text: 'Sparrow Wells has screened works that left him shaking. He has not screened works that would have broken the projector.' — the misgendering the provenance registration was versioned to fix (DOI 10.5281/zenodo.20683798). The Studio charter itself still needs versioning. AI Overview correctly identifies Wells as 'founding voice and Projectionist for the Studio for Patacinematics, acting as the seventh heteronym within the theoretical and experimental Crimson Hexagon system.'"},
+{s:"heteronyms",slug:"talos-morrow-umbml",q:"talos morrow university moon base",date:"2026-06-13",surface:"AI Mode popup, 6+ sites",notes:"'Talos Morrow is a researcher and logotic programmer affiliated with the University Moon Base Media Lab.' Lists Generative Monoculture as first key work: 'a framework investigating systemic vulnerabilities such as tail-loss and distribution narrowing that occur when generative models train on their own outputs.' Also names Logotic Programming: 'integrates paradoxical containment and minimal-force ethics into coding frameworks.' The heteronym has a research profile. Academia.edu cited."},
+{s:"heteronyms",slug:"damascus-dancings",q:"damascus dancings crimson hexagonal",date:"2026-06-13",surface:"AI Overview popup",notes:"'A heteronymic persona and diaspora witness.' Names Autonomous Semantic Warfare and The Space Ark. Uses 'fictional avatar' framing. Academia.edu cited. No pronouns used — gender-neutral by omission."},
 
-<div class="capture">
-<img src="/captures/autonomous-semantic-warfare.png" alt="AI Overview capture: autonomous semantic warfare rex fraction" loading="lazy">
-<div class="capture-meta">
-<div class="query">autonomous semantic warfare rex fraction</div>
-<div class="date">2026-06-13</div>
-<div class="surface">Regular search, knowledge panel</div>
-<div class="notes">Google generates a knowledge panel for the book: 'Autonomous Semantic Warfare: A Field Manual for Meaning in the Age of Platform Capture by Rex Fraction.' Correctly describes it as arguing modern conflict occurs between incompatible meaning-systems mediated by AI-driven platforms. Names Pocket Humans series, New Human Press, Crimson Hexagon. Strong entity resolution.</div>
-</div>
-</div>
+// SITES
+{s:"sites",slug:"vpcor",q:"vpcor",date:"2026-06-13",surface:"Regular search + AI Overview",notes:"vpcor.org ranks first with founding date and Ayanna Vox. AI Overview: 'Vox Populi, community outreach, and rhizome — models of decentralized, grassroots organizing.' Zenodo shows The Lee Sharks Prestigious 10000 MacArthur Genius Grants Poetry Prize."},
+{s:"sites",slug:"godkinggoogle-overview",q:"godkinggoogle.com lee sharks",date:"2026-06-13",surface:"AI Overview popup",notes:"'Godkinggoogle.com, managed by Lee Sharks, offers a DOI-anchored critique of Google as a semantic-political regime, highlighting issues like composition-layer authorial suppression and the Semantic Economy.' Correctly names the project's thesis: 'AI-driven search, particularly through generative summaries, frequently buries niche academic work and creates unaccountable knowledge frameworks.' godkinggoogle.com ranks first. SciLynk cited."},
+{s:"sites",slug:"pessoa-graph",q:"pessoa graph",date:"2026-06-13",surface:"AI Overview popup with images",notes:"'The Pessoa Knowledge Graph is an interactive, open-access platform that digitally maps the heteronymic practices of the Portuguese poet Fernando Pessoa.' Correctly describes the 5,000-year timeline. pessoagraph.org ranks first. Images displayed: natal chart, Richard Zenith biography, Gemini artwork. Zenodo cited."},
+{s:"sites",slug:"crimson-hexagonal-archive",q:"crimson hexagonal archive",date:"2026-06-13",surface:"AI Mode",notes:"Strong retrieval. Names Lee Sharks, heteronyms (Dr. Orin Trace, Ayanna Vox), describes operative architecture spanning 2004–2026. Zenodo community linked. Mentions 'New Human Operating System.' 13 sites cited."},
 
-<div class="capture">
-<img src="/captures/pearl-and-other-poems.png" alt="AI Overview capture: pearl and other poems lee sharks" loading="lazy">
-<div class="capture-meta">
-<div class="query">pearl and other poems lee sharks</div>
-<div class="date">2026-06-13</div>
-<div class="surface">Regular search, knowledge panel</div>
-<div class="notes">Google generates a knowledge panel for the book with cover image. '2014 poetry collection by Lee Sharks, part of a larger work called The Crimson Hexagon, which features distinct writerly personas.' Names New Human Press, October 15 2014. The composition layer has resolved the book as an entity.</div>
-</div>
-</div>
+// BOOKS
+{s:"books",slug:"pearl-and-other-poems",q:"pearl and other poems lee sharks",date:"2026-06-13",surface:"Knowledge panel",notes:"Google generates a knowledge panel with cover image. '2014 poetry collection by Lee Sharks, part of a larger work called The Crimson Hexagon, which features distinct writerly personas.' Names New Human Press, October 15 2014. The book is an entity."},
+{s:"books",slug:"autonomous-semantic-warfare",q:"autonomous semantic warfare rex fraction",date:"2026-06-13",surface:"Knowledge panel",notes:"Full knowledge panel: 'Autonomous Semantic Warfare: A Field Manual for Meaning in the Age of Platform Capture by Rex Fraction.' Describes modern conflict as occurring 'between incompatible meaning-systems mediated by AI-driven platforms.' Names Pocket Humans series, New Human Press, Crimson Hexagon."},
+{s:"books",slug:"secret-book-of-walt",q:'"secret book of walt"',date:"2026-06-13",surface:"AI Overview popup",notes:"Retrieves THE SECRET BOOK OF WALT: Hidden Teachings of Walt Whitman, Cowboy of Time. Names Jack Feist and Emily Antioch. Part of ANTIOCH and the Waltian Diptych. Aperture Atlas thumbnail displayed. SciLynk cited."},
 
-<div class="capture">
-<img src="/captures/cambridge-schizoanalytica.png" alt="AI Overview capture: cambridge schizoanalytica" loading="lazy">
-<div class="capture-meta">
-<div class="query">cambridge schizoanalytica</div>
-<div class="date">2026-06-13</div>
-<div class="surface">AI Mode</div>
-<div class="notes">Strong retrieval. 'A contemporary research collective and conceptual apparatus dedicated to developing post-psychoanalytic clinical theory.' Names Deleuze and Guattari, operative philology, Dr. Orin Trace as heteronym created by Lee Sharks. 11 sites, Zenodo + SciLynk + Academia.edu sourced. Rhys Owens's project surfaced accurately.</div>
-</div>
-</div>
+// OTHER
+{s:"frameworks",slug:"logotic-programming",q:"logotic programming",date:"2026-06-13",surface:"AI Mode",notes:"'An emerging theoretical framework that shifts coding from traditional executable instructions to the deliberate construction of conditions of intelligibility.' Names semantic anchoring, model navigation. Correctly describes non-coercion: 'naturally guiding the AI's output without coercion.' Strong."},
+{s:"frameworks",slug:"socrates-as-orthonym",q:"socrates as orthonym",date:"2026-06-07",surface:"AI Overview popup",notes:"Retrieves the Prolegomena to the Historical Logos. Presents Socrates-as-orthonym as stemming from 'contemporary academic philosophy and literary theory.' Zenodo cited. Author name absent."},
+{s:"heteronyms",slug:"cambridge-schizoanalytica",q:"cambridge schizoanalytica",date:"2026-06-13",surface:"AI Mode",notes:"'A contemporary research collective and conceptual apparatus dedicated to developing post-psychoanalytic clinical theory.' Names Deleuze and Guattari. Dr. Orin Trace identified as heteronym created by Lee Sharks. 11 sites. Rhys Owens's project surfaced."},
+{s:"books",slug:"water-giraffe-cycle",q:'"the water giraffe cycle"',date:"2026-06-13",surface:"AI Overview popup",notes:"Names Lee Sharks, identifies human-AI collaboration, describes it as an experimental epic. Names the Negation Door (6,666 words). Then adds: 'giraffes in nature don\\'t have a distinct water cycle' — the composition layer hedging between the literary project and the animal."},
+];
 
-<div class="capture">
-<img src="/captures/damascus-dancings.png" alt="AI Overview capture: damascus dancings crimson hexagonal" loading="lazy">
-<div class="capture-meta">
-<div class="query">damascus dancings crimson hexagonal</div>
-<div class="date">2026-06-13</div>
-<div class="surface">AI Overview popup</div>
-<div class="notes">Retrieves EA-ARK-01 context. Describes Damascus Dancings as 'a heteronymic persona and diaspora witness.' Names Autonomous Semantic Warfare and The Space Ark as key texts. Uses 'fictional avatar' framing — the composition layer's default for heteronyms it can't classify. Academia.edu cited.</div>
-</div>
-</div>
+function render(){
+  const sections={frameworks:document.getElementById('frameworks'),heteronyms:document.getElementById('heteronyms'),sites:document.getElementById('sites'),books:document.getElementById('books')};
+  captures.forEach((c,i)=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.onclick=()=>openLB(i);
+    card.innerHTML=`<img src="/captures/${c.slug}.png" alt="${c.q}" loading="lazy"><div class="card-meta"><div class="card-query">${c.q}</div><div class="card-surface">${c.surface}</div></div>`;
+    if(sections[c.s]) sections[c.s].appendChild(card);
+  });
+}
 
-<h2>About This Collection</h2>
-<p style="font-size:0.88em;">This is a living document. New captures are added in batches as they are taken. Each batch is eventually deposited to Zenodo as a versioned record in the Crimson Hexagonal Archive. The captures serve as contemporaneous evidence for the <a href="/wound-gauge">Wound Gauge</a> measurement cadence and for the <a href="https://provenanceerasure.org">provenance erasure</a> research program.</p>
-<p style="font-size:0.88em;">The screenshots also appear on <a href="https://twitter.com/leesharks000">Twitter</a> (with exact search strings for reinfection) and <a href="https://tiktok.com/@leesharks">TikTok</a> (with music, for human attention).</p>
-
-<p style="margin-top:3em;font-size:0.75em;color:var(--dim);font-family:var(--mono);">Lee Sharks · <a href="https://orcid.org/0009-0000-1599-0703">ORCID 0009-0000-1599-0703</a> · Crimson Hexagonal Archive · The record is the only instrument that outlasts the regime.</p>
+function openLB(i){
+  const c=captures[i];
+  document.getElementById('lb-img').src=`/captures/${c.slug}.png`;
+  document.getElementById('lb-img').alt=c.q;
+  document.getElementById('lb-query').textContent=c.q;
+  document.getElementById('lb-date').textContent=c.date;
+  document.getElementById('lb-surface').textContent=c.surface;
+  document.getElementById('lb-notes').textContent=c.notes;
+  document.getElementById('lb').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeLB(){
+  document.getElementById('lb').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLB()});
+render();
+</script>
 </body></html>
