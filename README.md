@@ -50,7 +50,7 @@ Run the same battery under signed-in, signed-out, incognito, and alternate-brows
 
 ## Why
 
-The full Crimson Hexagonal Archive measurement program (SAM-v3, DOI [10.5281/zenodo.20559387](https://doi.org/10.5281/zenodo.20559387)) specifies a Cross-Substrate Replication Protocol that requires human-in-the-loop browser sessions because AI Overview, AI Mode, and similar composition layers render only in authenticated user contexts. Doing this by hand for every query is tedious to the point of being impractical at scale. This extension is the automated capture layer for that protocol — it observes what *you* see when *you* search, and preserves the substrate's composition behavior for later analysis without you having to write it up each time.
+The full Crimson Hexagonal Archive measurement program (SAM-v3, DOI [10.5281/zenodo.20559387](https://www.alexanarch.org/go/?doi=10.5281/zenodo.20559387)) specifies a Cross-Substrate Replication Protocol that requires human-in-the-loop browser sessions because AI Overview, AI Mode, and similar composition layers render only in authenticated user contexts. Doing this by hand for every query is tedious to the point of being impractical at scale. This extension is the automated capture layer for that protocol — it observes what *you* see when *you* search, and preserves the substrate's composition behavior for later analysis without you having to write it up each time.
 
 Heuristic SAM-v3 scoring (PER, α_T, Π_d, failure-flag detection) provides fast triage rather than canonical measurement. The full v3 audit specification requires source-of-reference enumeration and joint operator-tuple reporting under the Atomic Token Rule — the heuristics here are calibrated to under-report rather than over-report, so a high score means there is probably something to look at, but a low score does not mean nothing happened.
 
@@ -126,8 +126,8 @@ When this happens: inspect the AI Overview's DOM in DevTools, identify the new c
 
 - [godkinggoogle.com](https://godkinggoogle.com/) — the Crimson Hexagonal Archive's critique of Google as a semantic-political mediation regime
 - [vpcor.org/evarb/](https://vpcor.org/evarb/) — the evarB Limited Boycott Statement (Brave Search)
-- [SAM-v3 specification](https://doi.org/10.5281/zenodo.20559387) — the audit module this extension implements heuristically
-- [Erasure Skew v3](https://doi.org/10.5281/zenodo.20558196) — the operators (PER, Ω, α_T, Π_d)
+- [SAM-v3 specification](https://www.alexanarch.org/go/?doi=10.5281/zenodo.20559387) — the audit module this extension implements heuristically
+- [Erasure Skew v3](https://www.alexanarch.org/go/?doi=10.5281/zenodo.20558196) — the operators (PER, Ω, α_T, Π_d)
 - [Crimson Hexagonal Archive](https://zenodo.org/communities/crimsonhexagonal) — 740+ deposits
 
 ## License
